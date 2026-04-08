@@ -1,9 +1,11 @@
-function Header ()   {
-    return (
-        <header>
-            <h1>Ziyaarah</h1>
-        </header>
-    );
+import Navbar from "../components/Navbar";
 
-}  
+function Header() {
+  return (
+    <header className="shadow-sm bg-white">
+      <Navbar />
+    </header>
+  );
+}
+
 export default Header;
