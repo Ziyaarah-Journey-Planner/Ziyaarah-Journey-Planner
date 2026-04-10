@@ -3,8 +3,6 @@ import Hero from "./Components/Hero"
 import Navbar from "./Components/Navbar"
 
 function App() {
- 
-
   return (
     <> 
   
@@ -15,4 +13,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
