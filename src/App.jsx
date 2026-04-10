@@ -2,8 +2,6 @@ import Hero from "./Components/Hero"
 import Navbar from "./Components/Navbar"
 
 function App() {
- 
-
   return (
     <> 
       <Navbar />
@@ -12,4 +10,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
