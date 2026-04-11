@@ -1,6 +1,9 @@
-import Footer from "./Components/Footer"
-import Hero from "./Components/Hero"
-import Navbar from "./Components/Navbar"
+import Navbar from "./Components/Navbar";
+import Hero from "./Components/Hero";
+import HomePage from "./Pages/HomePage";
+import Footer from "./Components/Footer";
+
+
 
 function App() {
   return (
@@ -8,9 +11,13 @@ function App() {
   
       <Navbar />
       <Hero />
+      <HomePage/>
       <Footer />
     </>
   )
 }
+
+
+
 
 export default App;
