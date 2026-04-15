@@ -4,7 +4,7 @@ function HomePage() {
   return (
     <div>
 
-                           {/* FEATURES */}
+
       <section className="bg-gray-50 py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
 
@@ -20,7 +20,6 @@ function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
 
-                           {/* Card 1 */}
             <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
               <div className="bg-blue-600 p-3 rounded-lg w-fit mx-auto mb-4">
                 <Calendar className="text-white" size={22} />
@@ -32,7 +31,6 @@ function HomePage() {
               </p>
             </div>
 
-                          {/* Card 2 */}
             <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
               <div className="bg-green-600 p-3 rounded-lg w-fit mx-auto mb-4">
                 <CheckCircle className="text-white" size={22} />
@@ -44,7 +42,6 @@ function HomePage() {
               </p>
             </div>
 
-                         {/* Card 3 */}
             <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
               <div className="bg-yellow-600 p-3 rounded-lg w-fit mx-auto mb-4">
                 <BookOpen className="text-white" size={22} />
@@ -56,7 +53,6 @@ function HomePage() {
               </p>
             </div>
 
-                           {/* Card 4 */}
             <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
               <div className="bg-orange-600 p-3 rounded-lg w-fit mx-auto mb-4">
                 <User className="text-white" size={22} />
@@ -72,7 +68,6 @@ function HomePage() {
         </div>
       </section>
 
-                           {/* JOURNEY */}
       <section className="bg-green-800 py-20 text-white">
         <div className="max-w-6xl mx-auto px-6 text-center">
 
@@ -88,7 +83,6 @@ function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-                                   {/* HAJJ */}
             <div className="relative group rounded-2xl overflow-hidden shadow-lg">
 
               <img
@@ -119,7 +113,6 @@ function HomePage() {
 
             </div>
 
-                               {/* UMRAH */}
             <div className="relative group rounded-2xl overflow-hidden shadow-lg">
 
               <img
