@@ -10,7 +10,7 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
     if (email && password) {
       localStorage.setItem("user", JSON.stringify({ email }));
       navigate("/notes");
