@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { CircleDot, CheckSquare } from "lucide-react";
+
+
 function Hero() {
     return (
         <section className="bg-gray-50 py-16">
@@ -32,7 +34,7 @@ function Hero() {
         {/* RIGHT Image */}
         <div className="relative "> 
 <img 
-src ="kaaba.jpg" 
+src ="/kaaba.jpg" 
 alt = "Kaaba"
 className="rounded-2xl shadow-lg  absolute bottom-4 right-4 w-100 h-100 " />
 {/* Top Badge  */}
