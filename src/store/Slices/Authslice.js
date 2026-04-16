@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { BASE_URL } from "../BaseUrl";
 // Get user from localStorage
 const storedUser = localStorage.getItem("user");
 
