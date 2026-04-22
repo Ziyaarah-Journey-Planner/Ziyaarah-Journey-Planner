@@ -1,1 +1,1 @@
-export const BASE_URL = "https://github.com/duraanali/ziyaarah";
+export const BASE_URL = "http://localhost:5000";
