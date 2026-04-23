@@ -36,9 +36,15 @@ const Sidebar = () => {
             Dashboard
           </NavLink>
 
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100 cursor-pointer">
+          <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-green-900 cursor-pointer">
             <Calendar size={18} />
-            Trip Planner
+            <NavLink to="/planner" className= { ({ isActive }) =>
+              `text-sm transition ${
+                isActive                  ? "text-white " : "text-gray-600 hover:text-white"
+              }`
+            } >
+              Trip Planner
+            </NavLink>
           </div>
 
           <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100 cursor-pointer">
