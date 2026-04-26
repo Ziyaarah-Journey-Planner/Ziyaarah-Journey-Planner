@@ -36,6 +36,7 @@ const Sidebar = () => {
             Dashboard
           </NavLink>
 
+          
           <NavLink
             to="/trips"
             className={({ isActive }) =>

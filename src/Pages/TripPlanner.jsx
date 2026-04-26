@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../config";
 
+
 const TripPlanner = () => {
   const [trips, setTrips] = useState([]);
   const [destination, setDestination] = useState("");
   const [days, setDays] = useState("");
+  const[ date, setDate] = useState("");
 
   const fetchTrips = () => {
     fetch(`${BASE_URL}/api/trips`)
@@ -18,7 +20,7 @@ const TripPlanner = () => {
   }, []);
 
   const addTrip = () => {
-    if (!destination || !days) {
+    if (!destination || !days || !date) {
       alert("Fill all fields");
       return;
     }
@@ -28,12 +30,13 @@ const TripPlanner = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ destination, days }),
+      body: JSON.stringify({ destination, days, startDate: date }),
     })
       .then((res) => res.json())
       .then(() => {
         setDestination("");
         setDays("");
+        setDate("");
         fetchTrips();
       });
   };
@@ -64,6 +67,13 @@ const TripPlanner = () => {
           onChange={(e) => setDays(e.target.value)}
           className="border p-2 rounded w-full"
         />
+        <input
+          type="date"
+          placeholder="Start Date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="border p-2 rounded w-full"
+        />
 
         <button
           onClick={addTrip}
@@ -81,10 +91,17 @@ const TripPlanner = () => {
             key={trip.id}
             className="bg-white p-4 rounded-xl border flex justify-between items-center"
           >
+            
             <div>
               <h2 className="font-semibold">{trip.destination}</h2>
               <p className="text-gray-500">{trip.days} days</p>
+        <p className="text-gray-500">{trip.date} </p>
             </div>
+            <div className="flex gap-6 text-sm mt-2 text-gray-500">
+       
+       
+      </div>
+
 
             <button
               onClick={() => deleteTrip(trip.id)}
