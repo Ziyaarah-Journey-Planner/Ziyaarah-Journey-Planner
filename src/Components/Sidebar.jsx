@@ -5,11 +5,11 @@ const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   return (
+    
     <div className="w-64 h-screen bg-gray-50 border-r flex flex-col justify-between">
 
-    
       <div className="p-5">
-     
+
         <div className="flex items-center gap-3 mb-8">
           <div className="w-9 h-9 bg-[#16A34A] rounded-lg flex items-center justify-center text-white font-bold">
             Z
@@ -23,9 +23,9 @@ const Sidebar = () => {
         <nav className="flex flex-col gap-2">
 
           <NavLink
-            to="/"
+            to="/dashboard"
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${
+              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm ${
                 isActive
                   ? "bg-[#16A34A] text-white"
                   : "text-gray-600 hover:bg-gray-100"
@@ -36,26 +36,39 @@ const Sidebar = () => {
             Dashboard
           </NavLink>
 
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-green-900 cursor-pointer">
-            <Calendar size={18} />
-            <NavLink to="/planner" className= { ({ isActive }) =>
-              `text-sm transition ${
-                isActive                  ? "text-white " : "text-gray-600 hover:text-white"
+          
+          <NavLink
+            to="/trips"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm ${
+                isActive
+                  ? "bg-[#16A34A] text-white"
+                  : "text-gray-600 hover:bg-gray-100"
               }`
-            } >
-              Trip Planner
-            </NavLink>
-          </div>
+            }
+          >
+            <Calendar size={18} />
+            Trip Planner
+          </NavLink>
 
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100 cursor-pointer">
+          <NavLink
+            to="/rituals"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm ${
+                isActive
+                  ? "bg-[#16A34A] text-white"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`
+            }
+          >
             <CheckCircle size={18} />
             Ritual Tracker
-          </div>
+          </NavLink>
 
           <NavLink
             to="/resources"
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${
+              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm ${
                 isActive
                   ? "bg-[#16A34A] text-white"
                   : "text-gray-600 hover:bg-gray-100"

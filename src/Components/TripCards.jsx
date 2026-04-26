@@ -1,4 +1,4 @@
-const TripCard = ({ trip }) => {
+const TripCards = ({ trip }) => {
   return (
     <div className="bg-white rounded-xl shadow p-6 border">
       <div className="flex justify-between">
@@ -9,10 +9,7 @@ const TripCard = ({ trip }) => {
       </div>
 
       <div className="flex gap-6 text-sm mt-2 text-gray-500">
-        <span>{trip.startDate}</span>
-        <span>{trip.endDate}</span>
-        <span>{trip.stages.length} stages</span>
-        <span>{trip.progress}% complete</span>
+        
       </div>
 
       {/* Progress */}
@@ -40,4 +37,4 @@ const TripCard = ({ trip }) => {
   );
 };
 
-export default TripCard;
+export default TripCards;

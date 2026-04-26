@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 import {
   Book,
   Circle,
@@ -10,9 +10,9 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-white mt-16">
 
-      {/* CTA Section */}
+    <footer className="bg-white mt-16" >
+
       <section className="bg-gray-700 py-16 rounded-lg text-white">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
           <div>
@@ -24,9 +24,13 @@ const Footer = () => {
               Join thousands of Muslims using Ziyaarah to plan their journey with love and care.
             </p>
 
-            <button className="bg-green-600 px-6 py-3 rounded-lg hover:bg-green-700 transition">
-              Create your account
-            </button>
+     <Link
+  to="/register"
+  className="bg-green-600 px-6 py-3 rounded-lg hover:bg-green-700 transition inline-block"
+>
+  Create your account
+</Link>
+
           </div>
 
           <img
@@ -37,7 +41,7 @@ const Footer = () => {
         </div>
       </section>
 
-      {/* Quick Links */}
+  
       <div className="max-w-7xl mx-auto px-6 mt-12">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-black">Quick Links</h2>
@@ -48,7 +52,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Cards */}
+   
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-gray-100 p-6 rounded-lg text-center">
             <CalendarCheck className="mx-auto mb-2 text-blue-500" />
@@ -84,7 +88,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Footer */}
       <div className="bg-gray-800 text-white mt-12 py-6">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2 mb-4 md:mb-0">
