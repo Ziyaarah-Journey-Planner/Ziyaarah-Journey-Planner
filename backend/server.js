@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const { status } = require("server/reply");
 
 const app = express();
 
@@ -28,10 +29,39 @@ app.get("/api/resources", (req, res) => {
 
 
 app.get("/api/dashboard", (req, res) => {
+   let totalTasks = 0;
+  let completedTasks = 0;
+  
+  rituals.forEach(stage => {
+    totalTasks += stage.tasks.length;
+    completedTasks += stage.tasks.filter(t => t.completed).length;
+  });
+
+  // Calculate overall progress percentage
+  const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
   res.json({
-    totalResources: resources.length,
-    featured: resources.filter(r => r.featured).length,
-    categories: [...new Set(resources.map(r => r.category))],
+    
+   stats: {
+      activeJourneys: trips.length,
+      progress: progressPercent,
+      completedTasks: completedTasks,
+      totalTasks: totalTasks,
+    },
+    currentJourney: trips.length > 0 ? {
+      title: trips[0].title,
+      type: trips[0].type + " Pilgrimage",
+      startDate: trips[0].startDate,
+      endDate: trips[0].endDate,
+      progress: progressPercent
+    } : null,
+    journeyStages: rituals.map(r => ({
+      name: r.stage,
+      status: r.tasks.every(t => t.completed) ? "Completed" : "In Progress",
+      tasksCompleted: r.tasks.filter(t => t.completed).length,
+      totalTasks: r.tasks.length
+
+  }))
   });
 });
 
@@ -40,6 +70,8 @@ app.get("/api/dashboard", (req, res) => {
 let trips = [
   { id: 1, destination: "Makkah", days: 5 },
   { id: 2, destination: "Madinah", days: 3 },
+  { id: 3, title: "UmrahSpring 2026", type: "Umrah", startDate: "2026-03-15", endDate: "2026-03-20", progress: 20, status: "Active", stages: ["Ihram", "Tawaf", "Sa'i", "Halq"] },
+  { id: 4, title: "Hajj2026", type: "Hajj", startDate: "2026-07-01", endDate: "2026-07-10", progress: 0, status: "Planned", stages: ["Ihram", "Tawaf", "Sa'i", "Arafat", "Muzdalifah", "Ramy al-Jamarat"] },
 ];
 
 
@@ -48,9 +80,9 @@ app.get("/api/trips", (req, res) => {
 });
 
 app.post("/api/trips", (req, res) => {
-  const { destination, days } = req.body;
+  const { destination, days , progress, status } = req.body;
 
-  if (!destination || !days) {
+  if (!destination || !days ) {
     return res.status(400).json({ error: "Missing fields" });
   }
 
@@ -58,8 +90,10 @@ app.post("/api/trips", (req, res) => {
     id: Date.now(),
     destination,
     days,
+   
+    progress: 0,
+    status: "Planned",
   };
-
   trips.push(newTrip);
   res.json(newTrip);
 });
@@ -82,8 +116,22 @@ app.delete("/api/trips/:id", (req, res) => {
 
 
 let rituals = [
-  { id: 1, name: "Ihram", completed: true },
-  { id: 2, name: "Tawaf", completed: false },
+   { 
+    id: 1, stage: "Travel & Arrival", 
+    tasks: [
+      { id: 101, name: "Pack Ihram clothing", type: "Mandatory", completed: true },
+      { id: 102, name: "Obtain necessary documents", type: "Mandatory", completed: false },
+      { id: 103, name: "Make travel dua", type: "Sunnah", completed: false },
+      { id: 104, name: "Pack prayer mat and Quran", type: "Preparation", completed: true },
+    ]
+  },
+  { 
+    id: 2, stage: "Miqat", 
+    tasks: [
+      { id: 201, name: "Perform Ghusl", type: "Sunnah", completed: false },
+      { id: 202, name: "Wear Ihram clothing", type: "Mandatory", completed: false },
+    ]
+  }
 ];
 
 
@@ -92,16 +140,19 @@ app.get("/api/rituals", (req, res) => {
 });
 
 app.put("/api/rituals/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  const ritual = rituals.find(r => r.id === id);
-
-  if (!ritual) {
-    return res.status(404).json({ error: "Ritual not found" });
+  const [stageId, taskId] = req.params.id.split("/");
+  const stage = rituals.find(s => s.id === parseInt(stageId));
+  if (stage) {
+    const task = stage.tasks.find(t => t.id === parseInt(taskId));
+    if (task) {
+      task.completed = !task.completed;
+      return res.json(task);
+    } else {
+      return res.status(404).json({ error: "Task not found" });
+    }
+  } else {
+    return res.status(404).json({ error: "Stage not found" });
   }
-
-  ritual.completed = !ritual.completed;
-
-  res.json(ritual);
 });
 
 
