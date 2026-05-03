@@ -1,12 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const { status } = require("server/reply");
 
 const app = express();
 
-
 app.use(cors());
 app.use(express.json());
+
+
 
 app.get("/", (req, res) => {
   res.send("🚀 API is running");
@@ -28,87 +28,75 @@ app.get("/api/resources", (req, res) => {
 });
 
 
-app.get("/api/dashboard", (req, res) => {
-   let totalTasks = 0;
-  let completedTasks = 0;
-  
-  rituals.forEach(stage => {
-    totalTasks += stage.tasks.length;
-    completedTasks += stage.tasks.filter(t => t.completed).length;
-  });
-
-  // Calculate overall progress percentage
-  const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-
-  res.json({
-    
-   stats: {
-      activeJourneys: trips.length,
-      progress: progressPercent,
-      completedTasks: completedTasks,
-      totalTasks: totalTasks,
-    },
-    currentJourney: trips.length > 0 ? {
-      title: trips[0].title,
-      type: trips[0].type + " Pilgrimage",
-      startDate: trips[0].startDate,
-      endDate: trips[0].endDate,
-      progress: progressPercent
-    } : null,
-    journeyStages: rituals.map(r => ({
-      name: r.stage,
-      status: r.tasks.every(t => t.completed) ? "Completed" : "In Progress",
-      tasksCompleted: r.tasks.filter(t => t.completed).length,
-      totalTasks: r.tasks.length
-
-  }))
-  });
-});
-
-
 
 let trips = [
-  { id: 1, destination: "Makkah", days: 5 },
-  { id: 2, destination: "Madinah", days: 3 },
-  { id: 3, title: "UmrahSpring 2026", type: "Umrah", startDate: "2026-03-15", endDate: "2026-03-20", progress: 20, status: "Active", stages: ["Ihram", "Tawaf", "Sa'i", "Halq"] },
-  { id: 4, title: "Hajj2026", type: "Hajj", startDate: "2026-07-01", endDate: "2026-07-10", progress: 0, status: "Planned", stages: ["Ihram", "Tawaf", "Sa'i", "Arafat", "Muzdalifah", "Ramy al-Jamarat"] },
+  {
+    id: 1,
+    destination: "Makkah",
+    days: 5,
+    startDate: "2026-03-15",
+    progress: 20,
+    status: "Active",
+  },
+  {
+    id: 2,
+    destination: "Madinah",
+    days: 3,
+    startDate: "2026-03-20",
+    progress: 0,
+    status: "Planned",
+  },
+  {
+    id: 3,
+    title: "UmrahSpring 2026",
+    type: "Umrah",
+    startDate: "2026-03-15",
+    endDate: "2026-03-20",
+    progress: 20,
+    status: "Active",
+    stages: ["Ihram", "Tawaf", "Sa'i", "Halq"]
+  },
+  {
+    id: 4,
+    title: "Hajj2026",
+    type: "Hajj",
+    startDate: "2026-07-01",
+    endDate: "2026-07-10",
+    progress: 0,
+    status: "Planned",
+    stages: ["Ihram", "Tawaf", "Sa'i", "Arafat", "Muzdalifah", "Ramy al-Jamarat"]
+  }
 ];
-
 
 app.get("/api/trips", (req, res) => {
   res.json(trips);
 });
 
-app.post("/api/trips", (req, res) => {
-  const { destination, days , progress, status } = req.body;
 
-  if (!destination || !days ) {
+app.post("/api/trips", (req, res) => {
+  const { destination, days, startDate } = req.body;
+
+  if (!destination || !days || !startDate) {
     return res.status(400).json({ error: "Missing fields" });
   }
 
   const newTrip = {
     id: Date.now(),
     destination,
-    days,
-   
+    days: Number(days),
+    startDate,
     progress: 0,
     status: "Planned",
   };
+
   trips.push(newTrip);
   res.json(newTrip);
 });
 
-
 app.delete("/api/trips/:id", (req, res) => {
   const id = parseInt(req.params.id);
 
-  const index = trips.findIndex(t => t.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ error: "Trip not found" });
-  }
-
-  trips.splice(index, 1);
+  trips = trips.filter(t => t.id !== id);
 
   res.json({ message: "Trip deleted" });
 });
@@ -116,7 +104,7 @@ app.delete("/api/trips/:id", (req, res) => {
 
 
 let rituals = [
-   { 
+  { 
     id: 1, stage: "Travel & Arrival", 
     tasks: [
       { id: 101, name: "Pack Ihram clothing", type: "Mandatory", completed: true },
@@ -134,25 +122,55 @@ let rituals = [
   }
 ];
 
-
 app.get("/api/rituals", (req, res) => {
   res.json(rituals);
 });
 
-app.put("/api/rituals/:id", (req, res) => {
-  const [stageId, taskId] = req.params.id.split("/");
-  const stage = rituals.find(s => s.id === parseInt(stageId));
-  if (stage) {
-    const task = stage.tasks.find(t => t.id === parseInt(taskId));
-    if (task) {
-      task.completed = !task.completed;
-      return res.json(task);
-    } else {
-      return res.status(404).json({ error: "Task not found" });
-    }
-  } else {
-    return res.status(404).json({ error: "Stage not found" });
-  }
+app.put("/api/rituals/:stageId/:taskId", (req, res) => {
+  const stageId = parseInt(req.params.stageId);
+  const taskId = parseInt(req.params.taskId);
+
+  const stage = rituals.find(s => s.id === stageId);
+  if (!stage) return res.status(404).json({ error: "Stage not found" });
+
+  const task = stage.tasks.find(t => t.id === taskId);
+  if (!task) return res.status(404).json({ error: "Task not found" });
+
+  task.completed = !task.completed;
+
+  res.json(task);
+});
+
+
+
+app.get("/api/dashboard", (req, res) => {
+  let totalTasks = 0;
+  let completedTasks = 0;
+
+  rituals.forEach(stage => {
+    totalTasks += stage.tasks.length;
+    completedTasks += stage.tasks.filter(t => t.completed).length;
+  });
+
+  const progressPercent = totalTasks > 0
+    ? Math.round((completedTasks / totalTasks) * 100)
+    : 0;
+
+  res.json({
+    stats: {
+      activeJourneys: trips.length,
+      progress: progressPercent,
+      completedTasks,
+      totalTasks,
+    },
+    currentJourney: trips[0] || null,
+    journeyStages: rituals.map(r => ({
+      name: r.stage,
+      status: r.tasks.every(t => t.completed) ? "Completed" : "In Progress",
+      tasksCompleted: r.tasks.filter(t => t.completed).length,
+      totalTasks: r.tasks.length
+    }))
+  });
 });
 
 
